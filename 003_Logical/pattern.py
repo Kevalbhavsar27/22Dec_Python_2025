@@ -98,3 +98,40 @@ lines = 5
 #   * * *
 #    * *
 #     *
+
+# lines = 5
+# for i in range(lines):
+#     for k in range(lines-(i+1)):
+#         print(" ",end="")
+#     for j in range(i+1):
+#         print("* ",end="")
+#     print()
+# for i in range(lines-1):
+#     for k in range(i+1):
+#         print(" ",end="")
+#     for j in range(lines-(i+1)):
+#         print("* ",end="")
+#     print()
+
+
+
+
+# lines = 5
+# for i in range(lines):
+#     for k in range(lines-(i+1)):
+#         print(" ",end="")
+#     for j in range(i+1):
+#         if j==0 or j==(i):
+#             print("* ",end="")
+#         else:
+#             print("  ",end="")
+#     print()
+# for i in range(lines-1):
+#     for k in range(i+1):
+#         print(" ",end="")
+#     for j in range(lines-(i+1)):
+#         if j==0 or j==(lines-(i+2)):
+#             print("* ",end="")
+#         else:
+#             print("  ",end="")
+#     print()
