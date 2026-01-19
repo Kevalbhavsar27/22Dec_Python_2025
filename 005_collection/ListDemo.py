@@ -37,7 +37,7 @@
 
 #looping
 
-l = [10,20,30,40,50]
+# l = [10,20,30,40,50]
 # for i in l:
 #     print(i)
 
@@ -53,7 +53,7 @@ l = [10,20,30,40,50]
 
 #comprehention
 
-fruits = ["apple", "banana", "cherry", "kiwi", "mango"]
+# fruits = ["apple", "banana", "cherry", "kiwi", "mango"]
 
 # k = []
 # for i in fruits:
@@ -66,7 +66,7 @@ fruits = ["apple", "banana", "cherry", "kiwi", "mango"]
 # print(k)
 
 
-l = [10,2,5,60,45,89,26,54]
+# l = [10,2,5,60,45,89,26,54]
 
 # l.sort()
 # k=sorted(l)
@@ -81,8 +81,8 @@ l = [10,2,5,60,45,89,26,54]
 # k = l[:]
 # print(k)
 
-a = [10,20,30,10,10,"abc"]
-b = [100,200,300]
+# a = [10,20,30,10,10,"abc"]
+# b = [100,200,300]
 # c  =a+b
 # a.extend(b)
 # print(a)
@@ -93,7 +93,15 @@ b = [100,200,300]
 # print(max(a))
 # print(min(a))
 
-l = [[10,20],[30,40],[50,60]]
-for i in l:
-    for j in i:
-        print(j)
+# l = [[10,20],[30,40],[50,60]]
+# for i in l:
+#     for j in i:
+#         print(j)
+
+
+l = [10,20,30,40,40,10]
+# k = []
+# for i in l:
+#     if i not in k:
+#         k.append(i)
+
