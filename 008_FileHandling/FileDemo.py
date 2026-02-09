@@ -1,4 +1,4 @@
-# f = open("test.txt",'r')
+# f = open("test.txt",'w')
 # # f.write("Writing somethong...")
 # f.writelines(["Hello Python\n","Hello Tops"])
 # f.close()
