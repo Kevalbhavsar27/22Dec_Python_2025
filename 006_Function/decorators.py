@@ -29,8 +29,25 @@ def mul(func):
 
 # calc(10,20)
 
+def numbersOnly(func):
+    def execute(a):
+        if  str(a).isdigit():
+           func(a) 
+        else :
+            print("invalid data")      
+    return execute
+
+def charOnly(func):
+    def execute(a):
+        if  str(a).isalpha():
+           func(a) 
+        else :
+            print("invalid data")
+       
+    return execute
+
 
 def get(a):
     print(a)
 
-get("a")
+get("fddff")

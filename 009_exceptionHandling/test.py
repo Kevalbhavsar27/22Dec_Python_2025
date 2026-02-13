@@ -14,10 +14,10 @@
 # print("program ended")
 
 
-try :
-    # print(a)
-    a = 10+"abc"
-except NameError as e:
-    print(e)
-except TypeError as e:
-    print(e)
+# try :
+#     # print(a)
+#     a = 10+"abc"
+# except NameError as e:
+#     print(e)
+# except TypeError as e:
+#     print(e)
