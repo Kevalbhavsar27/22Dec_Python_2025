@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from myapp.models import *
 # Create your views here.
-def index(request):
+def index(request):  
+    all = Student.objects.all()
     if request.method=='POST':
         data = request.POST
         name = data.get("name")
@@ -10,6 +11,13 @@ def index(request):
 
         Student.objects.create(name=name,email = email,age=age)
 
-        return render(request,"index.html",{"msg":"registration suceess"})
         
-    return render(request,"index.html")
+        return render(request,"index.html",{"msg":"registration suceess","students":all})  
+    return render(request,"index.html",{"students":all})
+
+def delete(request):
+    did = request.GET['did']
+    st = Student.objects.get(id=did)
+    st.delete()
+    return redirect("index")
+    

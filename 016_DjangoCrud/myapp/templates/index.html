@@ -16,6 +16,29 @@
         <input type="text" name="age" placeholder="Enter age">
         <input type="submit">
     </form>
+
+    <br>
+    <hr>
+    <br>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th colspan="2">Action</th>
+        </tr>
+        {%for i in students%}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.age}}</td>
+            <td><a href="{%url 'delete'%}?did={{i.id}}">Delete</a></td>
+            <td><a href="">Update</a></td>
+        </tr>
+        {%endfor%}
+    </table>
 </body>
 
 </html>
