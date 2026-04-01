@@ -37,6 +37,8 @@ def update(request):
         st.save()
         
         return render(request,"index.html",{"msg":"update suceess","students":all})  
+    
+    
     uid = request.GET['uid']
     st = Student.objects.get(id=uid)
     return render(request,"index.html",{"student":st,"students":all})
