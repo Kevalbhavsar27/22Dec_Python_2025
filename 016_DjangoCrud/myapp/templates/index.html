@@ -11,9 +11,10 @@
     {{msg}}
     <form action="" method="post">
         {%csrf_token%}
-        <input type="text" name="name" placeholder="Enter name">
-        <input type="text" name="email" placeholder="Enter email">
-        <input type="text" name="age" placeholder="Enter age">
+        <input type="hidden" name="id" value="{{student.id}}">
+        <input type="text" name="name" placeholder="Enter name" value="{{student.name}}">
+        <input type="text" name="email" placeholder="Enter email" value="{{student.email}}">
+        <input type="text" name="age" placeholder="Enter age" value="{{student.age}}">
         <input type="submit">
     </form>
 
@@ -35,7 +36,7 @@
             <td>{{i.email}}</td>
             <td>{{i.age}}</td>
             <td><a href="{%url 'delete'%}?did={{i.id}}">Delete</a></td>
-            <td><a href="">Update</a></td>
+            <td><a href="{%url 'update'%}?uid={{i.id}}">Update</a></td>
         </tr>
         {%endfor%}
     </table>
