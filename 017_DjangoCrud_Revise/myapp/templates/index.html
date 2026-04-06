@@ -56,6 +56,9 @@
                                 value="{{student.phone}}">
                         </div>
 
+                        {%if student%}
+                        <img src="media/{{student.image}}" alt="" height="50px" width="50px">
+                        {%endif%}
                         <div class="mb-3">
                             <label class="form-label">Profile</label>
                             <input type="file" class="form-control" name="file">
