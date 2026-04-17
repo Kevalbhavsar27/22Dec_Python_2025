@@ -21,29 +21,33 @@
             <form action="{%url 'addproduct'%}" method="post">
                 {%csrf_token%}
 
+                <input type="hidden" name="id" value="{{product.id}}">
                 <div class="mb-3">
                     <label class="form-label">Category</label>
                     <select name="category" id="category" class="form-select">
                         <option value="0">---Select Category---</option>
                         {%for i in categories%}
-                        <option value="{{i.id}}">{{i.name}}</option>
+                        <option value="{{i.id}}" {%if i.id == product.category.id %}selected{%endif%}>{{i.name}}</option>
                         {%endfor%}
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Product Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Enter product name">
+                    <input type="text" name="name" class="form-control" placeholder="Enter product name"
+                        value="{{product.name}}">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Price</label>
-                    <input type="text" name="price" class="form-control" placeholder="Enter product price">
+                    <input type="text" name="price" class="form-control" placeholder="Enter product price"
+                        value="{{product.price}}">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Quantity</label>
-                    <input type="text" name="qty" class="form-control" placeholder="Enter Product qty">
+                    <input type="text" name="qty" class="form-control" placeholder="Enter Product qty"
+                        value="{{product.qty}}">
                 </div>
 
                 <input type="submit" class="btn btn-primary w-100" value="Add Product">
@@ -68,6 +72,7 @@
                             <th>Qty</th>
                             <th>Category</th>
                             <th>Total</th>
+                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,6 +84,8 @@
                             <td>{{product.qty}}</td>
                             <td>{{product.category.name}}</td>
                             <td class="fw-bold text-primary">{{product.total}}</td>
+                            <td><a href="{%url 'delete'%}?id={{product.id}}" class="btn btn-danger">Delete</a></td>
+                            <td><a href="{%url 'update'%}?id={{product.id}}" class="btn btn-primary">Update</a></td>
                         </tr>
                         {%endfor%}
                     </tbody>
