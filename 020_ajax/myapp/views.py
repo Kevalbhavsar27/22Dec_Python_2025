@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from myapp.models import *
 # Create your views here.
 def index(request):
@@ -26,4 +26,15 @@ def search(request):
     #     pro+="<ul><li>BAt</li><li>Ball</li></ul>"
 
     return HttpResponse(pro)
+
+
+def countries(request):
+    all_countries = Country.objects.all()
+    return JsonResponse({"data":list(all_countries.values())})
+def states(request):
+    cid = request.GET['cid']
+    country = Country.objects.get(pk=cid)
+    all_states = State.objects.filter(country=country)
+    return JsonResponse({"data":list(all_states.values())})
+
     

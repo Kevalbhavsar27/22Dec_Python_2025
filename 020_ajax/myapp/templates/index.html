@@ -11,7 +11,7 @@
     <script>
 
         $(document).ready(function () {
-
+            countries()
         })
 
 
@@ -31,6 +31,27 @@
             })
 
         }
+
+        const countries = () => {
+
+            var options = "<option value='0'>---Select country---<option>"
+            $.get("countries", {}, function (rt) {
+                rt.data.map(ele => {
+                    options += `<option value=${ele.id}>${ele.name}</option>`
+                })
+                $("#country").html(options)
+            })
+        }
+
+        const states = (cid) => {
+            var options = "<option value='0'>---Select states---<option>"
+            $.get("states", { cid }, function (rt) {
+                rt.data.map(ele => {
+                    options += `<option value=${ele.id}>${ele.name}</option>`
+                })
+                $("#state").html(options)
+            })
+        }
     </script>
 </head>
 
@@ -47,6 +68,27 @@
 
     <input type="text" name="search" id="search" onkeyup="search(value)">
     <div id="qdata"></div>
+
+
+    <br>
+    <hr>
+    <br>
+
+    <select name="country" id="country" onchange="states(value)">
+    </select>
+
+    <select name="state" id="state">
+        <option value="0">---select state---</option>
+    </select>
+
+
+    <select name="city" id="city">
+        <option value="0">---select city---</option>
+    </select>
+
+
+
+
 
 </body>
 
