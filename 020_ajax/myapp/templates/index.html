@@ -19,10 +19,18 @@
             var uname = $("#uname").val()
 
             $.get("test", { uname }, function (rt) {
-                alert(rt)
+                //alert(rt)
+                $("#tdata").html(rt)
             })
         }
 
+        const search = (q) => {
+
+            $.get("search", { q }, function (rt) {
+                $("#qdata").html(rt)
+            })
+
+        }
     </script>
 </head>
 
@@ -30,6 +38,15 @@
 
     <input type="text" name="uname" id="uname">
     <button onclick="test()">Submit</button>
+    <div id="tdata"></div>
+
+    <br>
+    <hr>
+    <br>
+
+
+    <input type="text" name="search" id="search" onkeyup="search(value)">
+    <div id="qdata"></div>
 
 </body>
 
