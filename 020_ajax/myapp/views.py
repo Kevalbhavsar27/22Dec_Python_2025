@@ -12,19 +12,22 @@ def test(request):
 
 def search(request):
     q = request.GET['q']
-    pro = "<ul>"
 
-    products = Product.objects.filter(name__startswith=q)
+    if q :     
+        pro = "<ul>"
 
-    for i in products:
-        pro+=f"<li>{i.name}</li>"
-    
-    pro+="</ul>"
-    # if q=='electric':
-    #     pro+="<ul><li>Fan</li><li>TV</li></ul>"
-    # elif q=='sports':
-    #     pro+="<ul><li>BAt</li><li>Ball</li></ul>"
+        products = Product.objects.filter(name__startswith=q)
 
+        for i in products:
+            pro+=f"<li>{i.name}</li>"
+        
+        pro+="</ul>"
+        # if q=='electric':
+        #     pro+="<ul><li>Fan</li><li>TV</li></ul>"
+        # elif q=='sports':
+        #     pro+="<ul><li>BAt</li><li>Ball</li></ul>"
+    else:
+        pro=""
     return HttpResponse(pro)
 
 
