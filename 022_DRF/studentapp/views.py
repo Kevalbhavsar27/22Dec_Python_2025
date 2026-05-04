@@ -20,3 +20,18 @@ def post_student(request):
         ser.save()
         return Response({"data":ser.data,"message":"Data inserted succssfully !!!"})
    
+@api_view(['PUT'])
+def put_student(request,id):
+    student = Student.objects.get(id=id)
+    ser = StudentSerilizer(student,request.data,partial=True)
+    if not ser.is_valid():
+        return Response({"errors":ser.errors,"message":"Something went wrong"})
+    else:
+        ser.save()
+        return Response({"data":ser.data,"message":"Data updated succssfully !!!"})
+   
+@api_view(['DELETE'])
+def delete_student(request,id):
+    student = Student.objects.get(id=id)
+    student.delete()
+    return Response({"message":"Student deleted"}) 
