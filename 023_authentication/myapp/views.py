@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.decorators import APIView
+from rest_framework.decorators import APIView,api_view
 from django.contrib.auth.models import User
 from myapp.serializer import *
 from rest_framework.response import Response
@@ -19,3 +19,13 @@ class UserAPIView(APIView):
             return Response({"data":ser.data})
         else:
             return Response({"errors":ser.errors})
+        
+
+@api_view(['GET'])
+def display(request):
+    return Response({"msg":"display calling"})
+
+
+@api_view(['GET'])
+def create(request):
+    return Response({"msg":"view calling"})
