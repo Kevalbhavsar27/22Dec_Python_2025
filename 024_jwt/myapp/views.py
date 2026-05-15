@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAdminUser,IsAuthenticated,IsAuthenticat
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def display(request):
     return Response({"msg":"display calling"})
 
