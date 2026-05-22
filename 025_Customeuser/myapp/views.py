@@ -4,6 +4,7 @@ from myapp.models import *
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,APIView, permission_classes
 from myapp.permissions import *
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -18,11 +19,11 @@ def create(request):
    
 
 @api_view(['GET'])
-@permission_classes([IsStudent])
+@permission_classes([IsAuthenticated])
 def create_student(request):
    return Response({"message":"stduent created"})
 
 @api_view(['GET'])
-@permission_classes([IsFaculty])
+@permission_classes([IsAuthenticated])
 def create_faculty(request):
    return Response({"message":"faculty created"})
