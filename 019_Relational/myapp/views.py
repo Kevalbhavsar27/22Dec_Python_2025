@@ -44,7 +44,7 @@ def update_product(request):
     products = Product.objects.all()
     id = request.GET['id']
       
-      p = Product.objects.get(pk=id)
+    p = Product.objects.get(pk=id)
 
 
    
