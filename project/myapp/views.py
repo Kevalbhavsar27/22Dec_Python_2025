@@ -5,6 +5,7 @@ from myapp.models import *
 from myapp.serializer import *
 from rest_framework import viewsets, status
 from rest_framework.permissions import *
+from rest_framework.decorators import action
 
 def index(request):
     return  Response("done")
@@ -28,6 +29,13 @@ class ProductViewset(viewsets.ModelViewSet):
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    
+    @action(detail=False, methods=['get'], url_path=r'categories/(?P<category_id>\d+)')
+    def categories(self, request, category_id):
+      
+        products = Product.objects.filter(category_id=category_id)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
 
     def get_permissions(self):
        
@@ -42,3 +50,98 @@ class UserViewset(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
+    
+
+class AddressViewset(viewsets.ModelViewSet):
+
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+    
+    def get_queryset(self):
+        # Show only logged-in user's addresses
+        return Address.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # Automatically save logged-in user
+        serializer.save(user=self.request.user)
+
+    def get_permissions(self):
+       
+        if self.action in ['create', 'update', 'partial_update', 'destroy','list','retrive']:
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [AllowAny]
+
+        return [permission() for permission in permission_classes]
+    
+    
+class CartViewset(viewsets.ModelViewSet):
+
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only logged-in user's cart items
+        return Cart.objects.filter(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+
+        product_id = request.data.get('product')
+        qty = int(request.data.get('qty', 1))
+
+      
+
+        cart_item = Cart.objects.filter(
+            user=request.user,
+            product_id=product_id
+        ).first()
+
+        if cart_item:
+            c = cart_item.qty + qty
+            print(c)
+            if c>0:
+                cart_item.qty = c
+                cart_item.save()
+            elif c<=0:
+                print(c)
+                cart_item.delete()
+                return Response(
+                {
+                    "message": "Cart Deleted",
+                },
+                status=status.HTTP_200_OK
+                )
+
+
+
+            serializer = self.get_serializer(cart_item)
+
+            return Response(
+                {
+                    "message": "Quantity updated in cart",
+                    "data": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+            
+            
+        if qty <= 0:
+            return Response(
+                {
+                    "error": "Quantity must be greater than 0"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=request.user)
+
+        return Response(
+            {
+                "message": "Product added to cart",
+                "data": serializer.data
+            },
+            status=status.HTTP_201_CREATED
+        )
