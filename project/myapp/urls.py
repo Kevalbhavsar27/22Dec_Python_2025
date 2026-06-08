@@ -12,4 +12,5 @@ router.register('carts', CartViewset,basename="carts")
 urlpatterns = [
     path('', include(router.urls)),
     
+    path("payment",payment,name="payment")
 ]

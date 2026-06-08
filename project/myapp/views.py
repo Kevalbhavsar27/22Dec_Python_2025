@@ -5,7 +5,9 @@ from myapp.models import *
 from myapp.serializer import *
 from rest_framework import viewsets, status
 from rest_framework.permissions import *
-from rest_framework.decorators import action
+from rest_framework.decorators import action,api_view
+from django.http import JsonResponse
+import razorpay
 
 def index(request):
     return  Response("done")
@@ -99,12 +101,12 @@ class CartViewset(viewsets.ModelViewSet):
 
         if cart_item:
             c = cart_item.qty + qty
-            print(c)
+            
             if c>0:
                 cart_item.qty = c
                 cart_item.save()
             elif c<=0:
-                print(c)
+                
                 cart_item.delete()
                 return Response(
                 {
@@ -145,3 +147,13 @@ class CartViewset(viewsets.ModelViewSet):
             },
             status=status.HTTP_201_CREATED
         )
+        
+
+@api_view(['POST'])
+def payment(request):
+    amt = int(request.data['amount'])
+    client = razorpay.Client(auth=("rzp_test_SrVF3qKpUUSwRy", "cQWzjjQRmeAPudfjsoRJNX8i"))
+
+    data = { "amount": amt*100, "currency": "INR", "receipt": "order_rcptid_11" }
+    payment = client.order.create(data=data) # Amount is in currency subunits.
+    return JsonResponse(payment)
