@@ -157,3 +157,94 @@ def payment(request):
     data = { "amount": amt*100, "currency": "INR", "receipt": "order_rcptid_11" }
     payment = client.order.create(data=data) # Amount is in currency subunits.
     return JsonResponse(payment)
+
+
+
+class OrderViewset(viewsets.ModelViewSet):
+
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+
+        if self.request.user.is_staff:
+            return Order.objects.all()
+
+        return Order.objects.filter(user=self.request.user)
+
+    def get_permissions(self):
+
+        if self.action in ['update', 'partial_update', 'destroy']:
+            permission_classes = [IsAdminUser]
+        else:
+            permission_classes = [IsAuthenticated]
+
+        return [permission() for permission in permission_classes]
+
+    @action(detail=False, methods=['post'])
+    def place_order(self, request):
+
+        address_id = request.data.get('address')
+        payment_method = request.data.get('payment_method', 'COD')
+
+        try:
+            address = Address.objects.get(
+                id=address_id,
+                user=request.user
+            )
+        except Address.DoesNotExist:
+            return Response(
+                {"error": "Invalid address"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        cart_items = Cart.objects.filter(user=request.user)
+
+        if not cart_items.exists():
+            return Response(
+                {"error": "Cart is empty"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        total_amount = sum(item.total_price for item in cart_items)
+
+        order = Order.objects.create(
+            user=request.user,
+            address=address,
+            total_amount=total_amount,
+            payment_method=payment_method
+        )
+
+        for item in cart_items:
+
+            if item.product.qty < item.qty:
+                order.delete()
+
+                return Response(
+                    {
+                        "error": f"{item.product.name} has only {item.product.qty} items available"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                qty=item.qty
+            )
+
+            # Reduce stock
+            item.product.qty -= item.qty
+            item.product.save()
+
+        # Clear cart
+        cart_items.delete()
+
+        serializer = self.get_serializer(order)
+
+        return Response(
+            {
+                "message": "Order placed successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_201_CREATED
+        )

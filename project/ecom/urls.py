@@ -22,8 +22,35 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+
+    # Swagger UI
+    path(
+        'api/docs/',
+        SpectacularSwaggerView.as_view(url_name='schema'),
+        name='swagger-ui'
+    ),
+
+    # ReDoc UI
+    path(
+        '',
+        SpectacularRedocView.as_view(url_name='schema'),
+        name='redoc'
+    ),
+    
+    
+    
     path("ecom/",include("myapp.urls")),
      path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
 
